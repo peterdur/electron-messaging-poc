@@ -7,10 +7,18 @@
   <body>
     <h1>Window A</h1>
     <!-- All of the Node.js APIs are available in this renderer process. -->
-    <button onclick="alert('clicked')">Click Me</button>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')
     </script>
+    <script>
+      const { ipcRenderer } = require('electron');
+
+      function bob() {
+        alert('sending...');
+        ipcRenderer.send('message-a', 'content');
+      }
+    </script>
+    <button onclick="bob()">Click Me</button>
   </body>
 </html>
