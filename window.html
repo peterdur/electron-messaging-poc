@@ -13,11 +13,19 @@
     </script>
     <script>
       const { ipcRenderer } = require('electron');
+      ipcRenderer.send('request-renderer-index');
 
       function bob() {
         alert('sending...');
         ipcRenderer.send('message-a', 'content');
       }
+
+      ipcRenderer.on('set-renderer-index', (event, arg) => {
+        console.log('received index', arg);
+        document.title = `Window ${arg}`;
+        var h1 = document.getElementsByTagName("h1")[0];
+        h1.innerText = `Window ${arg}`;
+      });
     </script>
     <button onclick="bob()">Click Me</button>
   </body>

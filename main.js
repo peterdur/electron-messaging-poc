@@ -3,11 +3,18 @@ const {app, ipcMain, BrowserWindow} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let renderer
+let renderers = [];
+let nextRendererIndex = 0;
+
+function createWindows() {
+  createWindow();
+  createWindow();
+  createWindow();
+}
 
 function createWindow () {
   // Create the browser window.
-  renderer = new BrowserWindow({
+  const renderer = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -15,20 +22,27 @@ function createWindow () {
     }
   })
 
-  // and load the index.html of the app.
-  renderer.loadFile('window.html')
+  const rendererIndex = nextRendererIndex++;
+  renderers[rendererIndex] = renderer;
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  renderer.loadFile('window.html')
+  renderer.webContents.send('set-renderer-index', rendererIndex);
+  console.log('send set-renderer-index', rendererIndex);
 
   // Emitted when the window is closed.
   renderer.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    renderer = null
+    renderers[rendererIndex] = null;
   })
 }
+
+ipcMain.on('request-renderer-index', (event, arg) => {
+  console.log('received request-renderer-index', arg);
+  for (let i = 0; i < nextRendererIndex; i++) {
+    if (renderers[i] != null) {
+      renderers[i].webContents.send('set-renderer-index', i);
+    }
+  }
+})
 
 ipcMain.on('message-a', (event, arg) => {
   console.log('received message-a', arg);
@@ -37,7 +51,7 @@ ipcMain.on('message-a', (event, arg) => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', createWindows)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
