@@ -7,19 +7,26 @@
   <body>
     <h1>Background</h1>
     <script>
+      let counter = 0;
+
       const { ipcRenderer } = require('electron');
+
+      ipcRenderer.on('poc/increment', () => {
+        counter++;
+        log(`background received poc/increment, counter now ${counter}`);
+        ipcRenderer.send('poc/update-counter', counter);
+      });
+
+      ipcRenderer.on('poc/get-counter', () => {
+        log('background received poc/get-counter');
+        ipcRenderer.send('poc/update-counter', counter);
+      });
 
       const log = (s) => {
         const p = document.createElement("p");
         p.innerText = s;
         document.body.appendChild(p);
       };
-
-      ipcRenderer.on('poc/increment', (event, arg) => {
-        document.title = 'received';
-        log('background received poc/increment');
-      });
-
     </script>
   </body>
 </html>

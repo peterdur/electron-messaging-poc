@@ -59,11 +59,30 @@ app.on('activate', function () {
   }
 });
 
+ipcMain.on('poc/increment', () => {
+  forwardToBackground('poc/increment');
+});
+
+ipcMain.on('poc/get-counter', () => {
+  forwardToBackground('poc/get-counter');
+});
+
+ipcMain.on('poc/update-counter', (event, arg) => {
+  forwardToWindows('poc/update-counter', arg);
+});
+
+ipcMain.on('poc/new-window', () => {
+  createWindow();
+});
+
 const forwardToBackground = (channel, arg) => {
   background.webContents.send(channel, arg);
 };
 
-ipcMain.on('poc/increment', (event, arg) => {
-  forwardToBackground('poc/increment', arg);
-});
-
+const forwardToWindows = (channel, arg) => {
+  for (let i = 0; i < nextWindowIndex; i++) {
+    if (windows[i] !== null) {
+      windows[i].webContents.send(channel, arg);
+    }
+  }
+};
