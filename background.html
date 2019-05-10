@@ -6,5 +6,13 @@
   </head>
   <body>
     <h1>Background</h1>
+    <script>
+      const { ipcRenderer } = require('electron');
+
+      ipcRenderer.on('message-a', (event, arg) => {
+        console.log('background message-a');
+        document.title = 'received';
+      });
+    </script>
   </body>
 </html>

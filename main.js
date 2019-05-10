@@ -55,6 +55,11 @@ app.on('activate', function () {
   }
 });
 
+const forwardToBackground = (channel, arg) => {
+  console.log('forwardToBackground', channel, arg);
+  background.webContents.send(channel, arg);
+};
+
 ipcMain.on('request-renderer-index', (event, arg) => {
   console.log('received request-renderer-index', arg);
   for (let i = 0; i < nextWindowIndex; i++) {
@@ -66,5 +71,6 @@ ipcMain.on('request-renderer-index', (event, arg) => {
 
 ipcMain.on('message-a', (event, arg) => {
   console.log('received message-a', arg);
+  forwardToBackground('message-a', arg);
 });
 
