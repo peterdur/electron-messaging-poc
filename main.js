@@ -1,33 +1,45 @@
 const {app, ipcMain, BrowserWindow} = require('electron')
 
+let background;
 let windows = [];
 let nextWindowIndex = 0;
 let windowCount = 0;
 
-function createWindow() {
+const createBackground = () => {
+  background = new BrowserWindow({
+    width: 400,
+    height: 300,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+
+  background.loadFile('background.html');
+}
+
+const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       nodeIntegration: true
     }
-  })
+  });
 
   const windowIndex = nextWindowIndex++;
   windowCount++;
   windows[windowIndex] = window;
 
-  window.loadFile('window.html')
+  window.loadFile('window.html');
 
-  window.on('closed', function () {
+  window.on('closed', () => {
     windows[windowIndex] = null;
     windowCount--;
-  })
+  });
 };
 
 app.on('ready', () => {
-  createWindow();
-  createWindow();
+  createBackground();
   createWindow();
 });
 
