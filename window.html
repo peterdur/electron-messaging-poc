@@ -11,7 +11,7 @@
       ipcRenderer.send('request-renderer-index');
 
       const onClickButton = () => {
-        ipcRenderer.send('message-a', 'content');
+        ipcRenderer.send('poc/increment', 'content');
       }
 
       ipcRenderer.on('set-renderer-index', (event, arg) => {

@@ -9,10 +9,17 @@
     <script>
       const { ipcRenderer } = require('electron');
 
-      ipcRenderer.on('message-a', (event, arg) => {
-        console.log('background message-a');
+      const log = (s) => {
+        const p = document.createElement("p");
+        p.innerText = 'increment';
+        document.body.appendChild(p);
+      };
+
+      ipcRenderer.on('poc/increment', (event, arg) => {
         document.title = 'received';
+        log('background increment');
       });
+
     </script>
   </body>
 </html>

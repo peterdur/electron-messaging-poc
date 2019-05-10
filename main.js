@@ -35,6 +35,10 @@ const createWindow = () => {
   window.on('closed', () => {
     windows[windowIndex] = null;
     windowCount--;
+
+    if (windowCount === 0) {
+      background.close();
+    }
   });
 };
 
@@ -69,8 +73,8 @@ ipcMain.on('request-renderer-index', (event, arg) => {
   }
 });
 
-ipcMain.on('message-a', (event, arg) => {
-  console.log('received message-a', arg);
-  forwardToBackground('message-a', arg);
+ipcMain.on('poc/increment', (event, arg) => {
+  console.log(`received poc/increment from sender=${event.sender.id} frame=${event.frameId}`, arg);
+  forwardToBackground('poc/increment', arg);
 });
 
