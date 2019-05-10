@@ -21,7 +21,6 @@ const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
-    show: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -31,16 +30,7 @@ const createWindow = () => {
   windowCount++;
   windows[windowIndex] = window;
 
-  window.webContents.send('set-id', 3);
   window.loadFile('window.html');
-  window.webContents.send('set-id', 4);
-
-  window.on('ready-to-show', () => {
-    console.log('ready-to-show');
-    window.webContents.send('set-id', 1);
-    window.show();
-    window.webContents.send('set-id', 2);
-  })
 
   window.on('closed', () => {
     windows[windowIndex] = null;
@@ -70,21 +60,10 @@ app.on('activate', function () {
 });
 
 const forwardToBackground = (channel, arg) => {
-  console.log('forwardToBackground', channel, arg);
   background.webContents.send(channel, arg);
 };
 
-ipcMain.on('request-renderer-index', (event, arg) => {
-  console.log('received request-renderer-index', arg);
-  for (let i = 0; i < nextWindowIndex; i++) {
-    if (windows[i] != null) {
-      windows[i].webContents.send('set-renderer-index', i);
-    }
-  }
-});
-
 ipcMain.on('poc/increment', (event, arg) => {
-  console.log(`received poc/increment from sender=${event.sender.id} frame=${event.frameId}`, arg);
   forwardToBackground('poc/increment', arg);
 });
 

@@ -8,9 +8,9 @@
     <h1>Window</h1>
     <script>
       const { ipcRenderer } = require('electron');
-      ipcRenderer.send('request-renderer-index');
 
-      const onClickButton = () => {
+      const onClickIncrement = () => {
+        log('sending poc/increment');
         ipcRenderer.send('poc/increment', 'content');
       }
 
@@ -18,21 +18,8 @@
         const p = document.createElement("p");
         p.innerText = s;
         document.body.appendChild(p);
-        console.log('log', s);
       };
-
-      ipcRenderer.on('set-renderer-index', (event, arg) => {
-        console.log('received index', arg);
-        document.title = `Window ${arg}`;
-        var h1 = document.getElementsByTagName("h1")[0];
-        h1.innerText = `Window ${arg}`;
-      });
-
-      ipcRenderer.on('set-id', (event, arg) => {
-        log(`received id ${arg}`);
-        console.log(`received id ${arg}`);
-      });
     </script>
-    <button onclick="onClickButton()">Click Me</button>
+    <button onclick="onClickIncrement()">Increment</button>
   </body>
 </html>
