@@ -21,6 +21,7 @@ const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
     height: 600,
+    show: false,
     webPreferences: {
       nodeIntegration: true
     }
@@ -30,7 +31,16 @@ const createWindow = () => {
   windowCount++;
   windows[windowIndex] = window;
 
+  window.webContents.send('set-id', 3);
   window.loadFile('window.html');
+  window.webContents.send('set-id', 4);
+
+  window.on('ready-to-show', () => {
+    console.log('ready-to-show');
+    window.webContents.send('set-id', 1);
+    window.show();
+    window.webContents.send('set-id', 2);
+  })
 
   window.on('closed', () => {
     windows[windowIndex] = null;
