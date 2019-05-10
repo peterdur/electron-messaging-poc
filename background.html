@@ -7,9 +7,10 @@
   <body>
     <h1>Background</h1>
     <script>
-      let counter = 0;
-
       const { ipcRenderer } = require('electron');
+      const { log } = require('./poc');
+
+      let counter = 0;
 
       ipcRenderer.on('poc/increment', () => {
         counter++;
@@ -21,12 +22,6 @@
         log('background received poc/get-counter');
         ipcRenderer.send('poc/update-counter', counter);
       });
-
-      const log = (s) => {
-        const p = document.createElement("p");
-        p.innerText = s;
-        document.body.appendChild(p);
-      };
     </script>
   </body>
 </html>

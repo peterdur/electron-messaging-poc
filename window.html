@@ -12,6 +12,7 @@
 
     <script>
       const { ipcRenderer } = require('electron');
+      const { log } = require('./poc');
 
       ipcRenderer.send('poc/get-counter');
 
@@ -29,12 +30,6 @@
         log(`received poc/update-counter with ${arg}`);
         document.getElementById('counter').innerText = arg;
       });
-
-      const log = (s) => {
-        const p = document.createElement('p');
-        p.innerText = s;
-        document.body.appendChild(p);
-      };
     </script>
   </body>
 </html>
