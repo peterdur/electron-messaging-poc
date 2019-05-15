@@ -28,7 +28,7 @@
         ipcRenderer.send('poc/increment');
       }
 
-      ipcRenderer.on('poc/update-counter', (event, arg) => {
+      window.pocOnMessage('poc/update-counter', (event, arg) => {
         log(`received poc/update-counter with ${arg}`);
         document.getElementById('counter').innerText = arg;
       });
