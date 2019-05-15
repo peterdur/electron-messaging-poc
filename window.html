@@ -12,23 +12,22 @@
     <span>Counter=<span id="counter">?</span></span>
 
     <script>
-      const { ipcRenderer } = require('electron');
       const { log } = require('./poc');
 
       log(window.pocGetFromPreload());
-      ipcRenderer.send('poc/get-counter');
+      window.pocGetCounter();
 
       const onClickNewWindow = () => {
         log('sending poc/new-window');
-        ipcRenderer.send('poc/new-window');
+        window.pocNewWindow();
       }
 
       const onClickIncrement = () => {
         log('sending poc/increment');
-        ipcRenderer.send('poc/increment');
+        window.pocIncrement();
       }
 
-      window.pocOnMessage('poc/update-counter', (event, arg) => {
+      window.pocOnUpdateCounter((event, arg) => {
         log(`received poc/update-counter with ${arg}`);
         document.getElementById('counter').innerText = arg;
       });
