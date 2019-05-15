@@ -1,20 +1,21 @@
-const { ipcRenderer } = require('electron');
-const { log } = require('./poc');
+const { ipcRenderer } = require("electron");
 
-window.pocGetFromPreload = () => 'got this string from preload!';
+window.poc = {
+  getFromPreload: () => "got this string from preload!",
 
-window.pocGetCounter = () => {
-    ipcRenderer.send('poc/get-counter');
-}
+  getCounter: () => {
+    ipcRenderer.send("poc/get-counter");
+  },
 
-window.pocIncrement = () => {
-    ipcRenderer.send('poc/increment');
-}
+  increment: () => {
+    ipcRenderer.send("poc/increment");
+  },
 
-window.pocNewWindow = () => {
-    ipcRenderer.send('poc/new-window');
-}
+  newWindow: () => {
+    ipcRenderer.send("poc/new-window");
+  },
 
-window.pocOnUpdateCounter = (callback) => {
-    ipcRenderer.on('poc/update-counter', callback);
-}
+  onUpdateCounter: callback => {
+    ipcRenderer.on("poc/update-counter", callback);
+  }
+};
