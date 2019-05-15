@@ -1,4 +1,5 @@
 const { ipcRenderer } = require("electron");
+const { log } = require('./poc');
 
 window.poc = {
   getFromPreload: () => "got this string from preload!",
@@ -17,5 +18,9 @@ window.poc = {
 
   onUpdateCounter: callback => {
     ipcRenderer.on("poc/update-counter", callback);
+  },
+
+  log: (s) => {
+      log(s);
   }
 };

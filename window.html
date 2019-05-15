@@ -12,23 +12,21 @@
     <span>Counter=<span id="counter">?</span></span>
 
     <script>
-      const { log } = require('./poc');
-
-      log(window.poc.getFromPreload());
+      window.poc.log(window.poc.getFromPreload());
       window.poc.getCounter();
 
       const onClickNewWindow = () => {
-        log('sending poc/new-window');
+        window.poc.log('sending poc/new-window');
         window.poc.newWindow();
       }
 
       const onClickIncrement = () => {
-        log('sending poc/increment');
+        window.poc.log('sending poc/increment');
         window.poc.increment();
       }
 
       window.poc.onUpdateCounter((event, arg) => {
-        log(`received poc/update-counter with ${arg}`);
+        window.poc.log(`received poc/update-counter with ${arg}`);
         document.getElementById('counter').innerText = arg;
       });
     </script>
