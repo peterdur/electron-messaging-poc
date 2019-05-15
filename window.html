@@ -15,6 +15,7 @@
       const { ipcRenderer } = require('electron');
       const { log } = require('./poc');
 
+      log(window.pocGetFromPreload());
       ipcRenderer.send('poc/get-counter');
 
       const onClickNewWindow = () => {

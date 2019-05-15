@@ -1,4 +1,5 @@
 const {app, ipcMain, BrowserWindow} = require('electron')
+const path = require('path');
 
 let background;
 let windows = [];
@@ -9,8 +10,8 @@ const createBackground = () => {
   background = new BrowserWindow({
     width: 400,
     height: 300,
-    webPreferences: {
-      nodeIntegration: true
+    webPreferences: {    
+      nodeIntegration: true,
     }
   });
 
@@ -22,7 +23,8 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      preload: path.join(app.getAppPath(), 'window-preload.js'),
     }
   });
 
