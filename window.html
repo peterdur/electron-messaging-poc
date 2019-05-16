@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src self 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="default-src self 'unsafe-inline' file:">
     <title>Window</title>
   </head>
 
@@ -12,7 +12,10 @@
     <button onclick="onClickIncrement()">Increment</button>
     <span>Counter=<span id="counter">?</span></span>
 
+    <script src="poc.js"></script>
     <script>
+      log('hello!');
+
       const pocSend = (messageType, payload) => {
         window.postMessage({messageType, payload}, '*');
       }
@@ -23,6 +26,10 @@
       }
 
       window.addEventListener("message", event => {
+        if (event.source !== window) {
+          return;
+        }
+
         const messageType = event.data.messageType;
         const payload = event.data.payload;
 

@@ -6,6 +6,10 @@ const pocSend = (messageType, payload) => {
 };
 
 window.addEventListener('message', event => {
+  if (event.source !== window) {
+    return;
+  }
+
   const messageType = event.data.messageType;
   const payload = event.data.payload;
 
