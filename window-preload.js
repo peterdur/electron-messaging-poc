@@ -24,3 +24,11 @@ window.poc = {
       log(s);
   }
 };
+
+window.addEventListener("message", (event) => {
+    switch(event.data.type) {
+        case 'getCounter':
+            ipcRenderer.send('poc/get-counter');
+            break;
+    }
+});

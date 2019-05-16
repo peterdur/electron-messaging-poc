@@ -14,7 +14,8 @@
 
     <script>
       window.poc.log(window.poc.getFromPreload());
-      window.poc.getCounter();
+      // window.poc.getCounter();
+      window.postMessage({type:'getCounter'}, '*');   // Avoid * later
 
       const onClickNewWindow = () => {
         window.poc.log('sending poc/new-window');
