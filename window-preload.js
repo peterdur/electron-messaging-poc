@@ -26,7 +26,10 @@ window.poc = {
 };
 
 window.addEventListener("message", (event) => {
-    switch(event.data.type) {
+    const messageType = event.data.messageType;
+    const payload = event.data.payload;
+    
+    switch(messageType) {
         case 'getCounter':
             ipcRenderer.send('poc/get-counter');
             break;

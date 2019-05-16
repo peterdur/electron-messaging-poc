@@ -13,9 +13,14 @@
     <span>Counter=<span id="counter">?</span></span>
 
     <script>
+      const pocSend = (messageType, payload) => {
+        window.postMessage({messageType, payload}, '*');
+      }
+
       window.poc.log(window.poc.getFromPreload());
       // window.poc.getCounter();
-      window.postMessage({type:'getCounter'}, '*');   // Avoid * later
+      // window.postMessage({messageType:'getCounter'}, '*');   // Avoid * later
+      pocSend('getCounter');
 
       const onClickNewWindow = () => {
         window.poc.log('sending poc/new-window');
