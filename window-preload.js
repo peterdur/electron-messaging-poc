@@ -1,10 +1,6 @@
 const { ipcRenderer } = require('electron');
 const { log } = require('./poc');
 
-window.poc = {
-  getFromPreload: () => 'got this string from preload!',
-};
-
 const pocSend = (messageType, payload) => {
   window.postMessage({ messageType, payload }, '*');
 };
