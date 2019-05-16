@@ -17,23 +17,21 @@
         window.postMessage({messageType, payload}, '*');
       }
 
-      window.poc.log(window.poc.getFromPreload());
-      // window.poc.getCounter();
-      // window.postMessage({messageType:'getCounter'}, '*');   // Avoid * later
+      pocSend('log', window.poc.getFromPreload());
       pocSend('getCounter');
 
       const onClickNewWindow = () => {
-        window.poc.log('sending poc/new-window');
-        window.poc.newWindow();
+        pocSend('log', 'sending poc/new-window');
+        pocSend('newWindow');
       }
 
       const onClickIncrement = () => {
-        window.poc.log('sending poc/increment');
-        window.poc.increment();
+        pocSend('log', 'sending poc/increment');
+        pocSend('increment');
       }
 
       window.poc.onUpdateCounter((event, arg) => {
-        window.poc.log(`received poc/update-counter with ${arg}`);
+        pocSend('log', `received poc/update-counter with ${arg}`);
         document.getElementById('counter').innerText = arg;
       });
     </script>
