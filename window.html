@@ -17,6 +17,20 @@
         window.postMessage({messageType, payload}, '*');
       }
 
+      const pocListeners = {};
+      const pocAddListener = (messageType, callback) => {
+        pocListeners[messageType] = callback;
+      }
+
+      window.addEventListener("message", event => {
+        const messageType = event.data.messageType;
+        const payload = event.data.payload;
+
+        if (pocListeners[messageType] !== undefined) {
+          pocListeners[messageType](payload);
+        }
+      });
+
       pocSend('log', window.poc.getFromPreload());
       pocSend('getCounter');
 
@@ -30,9 +44,9 @@
         pocSend('increment');
       }
 
-      window.poc.onUpdateCounter((event, arg) => {
-        pocSend('log', `received poc/update-counter with ${arg}`);
-        document.getElementById('counter').innerText = arg;
+      pocAddListener('updateCounter', payload => {
+        pocSend('log', `received poc/update-counter with ${payload}`);
+        document.getElementById('counter').innerText = payload;
       });
     </script>
   </body>

@@ -3,10 +3,10 @@ const { log } = require("./poc");
 
 window.poc = {
   getFromPreload: () => "got this string from preload!",
+};
 
-  onUpdateCounter: callback => {
-    ipcRenderer.on("poc/update-counter", callback);
-  },
+const pocSend = (messageType, payload) => {
+  window.postMessage({ messageType, payload }, "*");
 };
 
 window.addEventListener("message", event => {
@@ -29,4 +29,8 @@ window.addEventListener("message", event => {
     case "log":
       log(payload);
   }
+});
+
+ipcRenderer.on("poc/update-counter", (event, arg) => {
+    pocSend("updateCounter", arg);
 });
