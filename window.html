@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src self 'unsafe-inline' file:">
-    <title>Window</title>
-  </head>
 
-  <body>
-    <h1>Window</h1>
-    <button onclick="onClickNewWindow()">New Window</button>
-    <button onclick="onClickIncrement()">Increment</button>
-    <span>Counter=<span id="counter">?</span></span>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src self 'unsafe-inline' file:">
+  <title>Window</title>
+</head>
 
-    <script src="poc.js"></script>
-    <script>
-      pocSend('log', 'starting window');
-      pocSend('getCounter');
+<body>
+  <h1>Window</h1>
+  <button onclick="onClickNewWindow()">New Window</button>
+  <button onclick="onClickIncrement()">Increment</button>
+  <span>Counter=<span id="counter">?</span></span>
 
-      const onClickNewWindow = () => {
-        pocSend('log', 'sending poc/new-window');
-        pocSend('newWindow');
-      }
+  <script src="poc.js"></script>
+  <script>
+    pocSend('log', { message: 'starting window' });
+    pocSend('getCounter');
 
-      const onClickIncrement = () => {
-        pocSend('log', 'sending poc/increment');
-        pocSend('increment');
-      }
+    const onClickNewWindow = () => {
+      pocSend('log', { message: 'sending poc/new-window' });
+      pocSend('newWindow');
+    }
 
-      pocAddListener('updateCounter', payload => {
-        pocSend('log', `received poc/update-counter with ${payload}`);
-        document.getElementById('counter').innerText = payload;
-      });
-    </script>
-  </body>
+    const onClickIncrement = () => {
+      pocSend('log', { message: 'sending poc/increment' });
+      pocSend('increment');
+    }
+
+    pocAddListener('updateCounter', payload => {
+      pocSend('log', { message: `received poc/update-counter with ${payload.counter}` });
+      document.getElementById('counter').innerText = payload.counter;
+    });
+  </script>
+</body>
+
 </html>

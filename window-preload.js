@@ -1,22 +1,23 @@
-const { ipcRenderer } = require('electron');
-const { log, pocSend, pocAddListener } = require('./poc');
+const { ipcRenderer } = require("electron");
+const { log, pocSend, pocAddListener } = require("./poc");
 
-pocAddListener('getCounter', payload => {
-  ipcRenderer.send('poc/get-counter');
+pocAddListener("getCounter", payload => {
+  ipcRenderer.send("poc/get-counter");
 });
 
-pocAddListener('increment', payload => {
-  ipcRenderer.send('poc/increment');
+pocAddListener("increment", payload => {
+  ipcRenderer.send("poc/increment");
 });
 
-pocAddListener('newWindow', payload => {
-  ipcRenderer.send('poc/new-window');
+pocAddListener("newWindow", payload => {
+  ipcRenderer.send("poc/new-window");
 });
 
-pocAddListener('log', payload => {
-  log(payload);
+pocAddListener("log", payload => {
+  log(payload.message);
 });
 
-ipcRenderer.on('poc/update-counter', (event, arg) => {
-    pocSend('updateCounter', arg);
+ipcRenderer.on("poc/update-counter", (event, arg) => {
+  log(`poc/update-counter ${JSON.stringify(arg)}`);
+  pocSend("updateCounter", arg);
 });

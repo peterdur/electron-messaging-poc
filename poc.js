@@ -5,7 +5,7 @@ const log = s => {
 };
 
 const pocSend = (messageType, payload) => {
-  window.postMessage({ messageType, payload }, "*");
+  window.postMessage({ ...payload, messageType }, window.location.origin);
 };
 
 const pocListeners = [];
@@ -18,8 +18,8 @@ window.addEventListener("message", event => {
     return;
   }
 
-  const messageType = event.data.messageType;
-  const payload = event.data.payload;
+  const payload = event.data;
+  const messageType = payload.messageType;
 
   pocListeners.forEach(element => {
     if (element.messageType === messageType) {

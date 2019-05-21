@@ -71,7 +71,7 @@ ipcMain.on('poc/get-counter', () => {
 });
 
 ipcMain.on('poc/update-counter', (event, arg) => {
-  forwardToWindows('poc/update-counter', arg);
+  forwardToWindows('poc/update-counter', {counter: arg});
 });
 
 ipcMain.on('poc/new-window', () => {
