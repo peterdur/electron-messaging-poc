@@ -15,21 +15,21 @@
 
   <script src="poc.js"></script>
   <script>
-    pocSend('log', { message: 'starting window' });
+    pocSendLog('starting window');
     pocSend('getCounter');
 
     const onClickNewWindow = () => {
-      pocSend('log', { message: 'sending poc/new-window' });
+      pocSendLog('sending poc/new-window');
       pocSend('newWindow');
     }
 
     const onClickIncrement = () => {
-      pocSend('log', { message: 'sending poc/increment' });
+      pocSendLog('sending poc/increment');
       pocSend('increment');
     }
 
     pocAddListener('updateCounter', payload => {
-      pocSend('log', { message: `received poc/update-counter with ${payload.counter}` });
+      pocSendLog(`received poc/update-counter with ${payload.counter}`);
       document.getElementById('counter').innerText = payload.counter;
     });
   </script>

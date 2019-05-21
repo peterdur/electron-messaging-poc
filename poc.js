@@ -8,6 +8,10 @@ const pocSend = (messageType, payload) => {
   window.postMessage({ ...payload, messageType }, window.location.origin);
 };
 
+const pocSendLog = (message) => {
+  pocSend('log', {message});
+}
+
 const pocListeners = [];
 const pocAddListener = (messageType, callback) => {
   pocListeners.push({messageType, callback});
@@ -28,4 +32,4 @@ window.addEventListener("message", event => {
   });
 });
 
-module.exports = { log, pocSend, pocAddListener };
+module.exports = { log, pocSend, pocSendLog, pocAddListener };

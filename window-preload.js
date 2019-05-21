@@ -18,6 +18,5 @@ pocAddListener("log", payload => {
 });
 
 ipcRenderer.on("poc/update-counter", (event, arg) => {
-  log(`poc/update-counter ${JSON.stringify(arg)}`);
   pocSend("updateCounter", arg);
 });
