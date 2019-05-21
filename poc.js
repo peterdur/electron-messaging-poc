@@ -5,13 +5,13 @@ const log = s => {
 };
 
 const pocSend = (messageType, payload) => {
-  window.postMessage({messageType, payload}, '*');
-}
+  window.postMessage({ messageType, payload }, "*");
+};
 
-const pocListeners = {};
+const pocListeners = [];
 const pocAddListener = (messageType, callback) => {
-  pocListeners[messageType] = callback;
-}
+  pocListeners.push({messageType, callback});
+};
 
 window.addEventListener("message", event => {
   if (event.source !== window) {
@@ -21,9 +21,11 @@ window.addEventListener("message", event => {
   const messageType = event.data.messageType;
   const payload = event.data.payload;
 
-  if (pocListeners[messageType] !== undefined) {
-    pocListeners[messageType](payload);
-  }
+  pocListeners.forEach(element => {
+    if (element.messageType === messageType) {
+      element.callback(payload);
+    }
+  });
 });
 
 module.exports = { log, pocSend, pocAddListener };
