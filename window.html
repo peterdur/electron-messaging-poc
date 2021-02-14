@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Window</title>
-  </head>
 
-  <body>
-    <h1>Window</h1>
-    <button onclick="onClickNewWindow()">New Window</button>
-    <button onclick="onClickIncrement()">Increment</button>
-    <span>Counter=<span id="counter">?</span></span>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src self 'unsafe-inline' file:">
+  <title>Window</title>
+</head>
 
-    <script>
-      const { ipcRenderer } = require('electron');
-      const { log } = require('./poc');
+<body>
+  <h1>Window</h1>
+  <button onclick="onClickNewWindow()">New Window</button>
+  <button onclick="onClickIncrement()">Increment</button>
+  <span>Counter=<span id="counter">?</span></span>
 
-      ipcRenderer.send('poc/get-counter');
+  <script src="poc.js"></script>
+  <script>
+    pocSendLog('starting window');
+    pocSend('getCounter');
 
-      const onClickNewWindow = () => {
-        log('sending poc/new-window');
-        ipcRenderer.send('poc/new-window');
-      }
+    const onClickNewWindow = () => {
+      pocSendLog('sending poc/new-window');
+      pocSend('newWindow');
+    }
 
-      const onClickIncrement = () => {
-        log('sending poc/increment');
-        ipcRenderer.send('poc/increment');
-      }
+    const onClickIncrement = () => {
+      pocSendLog('sending poc/increment');
+      pocSend('increment');
+    }
 
-      ipcRenderer.on('poc/update-counter', (event, arg) => {
-        log(`received poc/update-counter with ${arg}`);
-        document.getElementById('counter').innerText = arg;
-      });
-    </script>
-  </body>
+    pocAddListener('updateCounter', payload => {
+      pocSendLog(`received poc/update-counter with ${payload.counter}`);
+      document.getElementById('counter').innerText = payload.counter;
+    });
+  </script>
+</body>
+
 </html>
