@@ -12,6 +12,7 @@ const createBackground = () => {
     height: 300,
     webPreferences: {    
       nodeIntegration: true,
+      contextIsolation: false
     }
   });
 
